@@ -1,7 +1,7 @@
 # Single cell analyses in [Ratnayake et al (2020)](https://www.biorxiv.org/content/10.1101/2020.08.24.262428v1.abstract).
 Code describing the analyses of the single cell dataset included in [Ratnayake et al (2020)](https://www.biorxiv.org/content/10.1101/2020.08.24.262428v1.abstract). There are two main code files, one describing preprocessing and QC, normalisation, dimensional reduction, clustering and cluster markers identification,  using `Seurat`<sup>1, 2</sup> (`SC_RNA_seq.Rmd`) and a second one, describing a trajectory analysis using `PAGA`<sup>3</sup> (`Trajectory_Analysis.ipynb`) within the `Scanpy`<sup>4</sup> analytical toolkit. 
 
-Both [`SC_RNA_seq.Rmd`](http://htmlpreview.github.io/?https://github.com/fjrossello/Ratnayake_et_al_2020_SC/blob/main/SC_RNA_seq.html) and [`Trajectory_Analysis.ipynb`](http://htmlpreview.github.io/?https://github.com/fjrossello/Ratnayake_et_al_2020_SC/blob/main/Trajectory_Analysis.html) code files have been compiled into `htmls` for easy visualization and sharing.
+Both [`SC_RNA_seq.Rmd`](http://htmlpreview.github.io/?https://github.com/fjrossello/Ratnayake_et_al_2020_SC/blob/master/SC_RNA_seq.html) and [`Trajectory_Analysis.ipynb`](http://htmlpreview.github.io/?https://github.com/fjrossello/Ratnayake_et_al_2020_SC/blob/master/Trajectory_Analysis.html) code files have been compiled into `htmls` for easy visualization and sharing.
 
 ## References
 1. Stuart, T., Butler, A., Hoffman, P., Hafemeister, C., Papalexi, E., Mauck, W. M., … Satija, R. (2019). Comprehensive Integration of Single-Cell Data. Cell. https://doi.org/10.1016/j.cell.2019.05.031
