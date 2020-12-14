@@ -1,0 +1,16 @@
+Package: Danio.rerio.Zv9.77.gtf
+Title: Annotation package for TxDb object(s)
+Description: Exposes an annotation databases generated from Ensembl by exposing these as TxDb objects
+Version: 1.0.0
+Author: Fernando J Rossello <frossello@unimelb.edu.au> [aut, cre]
+Maintainer: Fernando J Rossello <frossello@unimelb.edu.au>
+Depends: GenomicFeatures (>= 1.38.2)
+Imports: AnnotationDbi
+License: Artistic-2.0
+organism: Brachydanio rerio
+species: Brachydanio rerio
+provider: Ensembl
+provider_version: 0.77
+release_date: 2020-12-14 10:21:51 +0000 (Mon, 14 Dec 2020)
+resource_url: ftp://ftp.ensembl.org/pub/release-77/gtf/danio_rerio/Danio_rerio.Zv9.77.gtf.gz
+biocViews: AnnotationData, Genetics, TxDb, Brachydanio_rerio

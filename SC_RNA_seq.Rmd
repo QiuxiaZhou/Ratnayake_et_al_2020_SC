@@ -1,0 +1,560 @@
+---
+title: | 
+  | SC analysis included in [Ratnayake et al (2020)](https://www.biorxiv.org/content/10.1101/2020.08.24.262428v1.abstract).
+author: |
+  | Fernando J. Rossello
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: 
+      collapsed: false
+fontsize: 11pt
+pagetitle: "Single cell RNA-seq"
+editor_options: 
+  chunk_output_type: console
+---
+
+# Repository details.
+
+- Required transcript counts matrices files and objects are included in `data/transcript_counts` and `data/objects` folders respectively.
+- An annotation package for Dan Rer 10 Ensembl GTF version 91 can be found in `annotation` folder.
+
+# Load required libraries.
+
+```{r session_setup, include = TRUE, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+library(scater)
+library(Seurat)
+library(tibble)
+library(dplyr)
+library(GenomicFeatures)
+library(org.Dr.eg.db)
+library(Danio.rerio.Zv9.77.gtf)
+library(ggplot2)
+library(patchwork)
+```
+
+```{r set_working_dir, include = FALSE, results='hide', message=FALSE, warning=FALSE}
+
+setwd("~/projects/Danni_Ratnayake/Danni_Ratnayake_scRNA-seq_Machrophage_Zebrafish_Samples_Currie_Group/analysis/R/Github_repo/Ratnayake_et_al_2020_SC")
+
+```
+
+# Analysis.
+
+Analysis performed using Seurat (`v3.1.1` and `uwot_0.1.5`, largely based on guidelines described here[https://satijalab.org/seurat/v3.2/pbmc3k_tutorial.html]).
+
+## Import transcript counts.
+
+```{r import transcript counts, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+
+plate.wells.384 <- paste(rep(LETTERS, each=24, len=384), rep(1:24, len=384), sep="")
+
+# Plate 2
+
+plate.2.transcript.counts <-
+  as.data.frame(
+    read.delim(
+      "data/transcript_counts/PN2_TranscriptCounts.tsv",
+      sep = "\t",
+      stringsAsFactors = F
+    )
+  )
+
+rownames(plate.2.transcript.counts) <- plate.2.transcript.counts$GENEID
+colnames(plate.2.transcript.counts)[-1] <- paste("Pn2_", plate.wells.384, sep = "")
+
+# Plate 3
+
+plate.3.transcript.counts <-
+  as.data.frame(
+    read.delim(
+      "data/transcript_counts/PN3_TranscriptCounts.tsv",
+      sep = "\t",
+      stringsAsFactors = F
+    )
+  )
+
+rownames(plate.3.transcript.counts) <- plate.3.transcript.counts$GENEID
+colnames(plate.3.transcript.counts)[-1] <- paste("Pn3_", plate.wells.384, sep = "")
+
+# Plate 4
+
+plate.4.transcript.counts <-
+  as.data.frame(
+    read.delim(
+      "data/transcript_counts/PN4_TranscriptCounts.tsv",
+      sep = "\t",
+      stringsAsFactors = F
+    )
+  )
+rownames(plate.4.transcript.counts) <- plate.4.transcript.counts$GENEID
+colnames(plate.4.transcript.counts)[-1] <- paste("Pn4_", plate.wells.384, sep = "")
+
+# Plate 5
+
+plate.5.transcript.counts <-
+  as.data.frame(
+    read.delim(
+      "data/transcript_counts/PN5_TranscriptCounts.tsv",
+      sep = "\t",
+      stringsAsFactors = F
+    )
+  )
+
+colnames(plate.5.transcript.counts)[-1] <-
+  paste("Pn5_", plate.wells.384, sep = "")
+rownames(plate.5.transcript.counts) <-
+  plate.5.transcript.counts$GENEID
+
+# Plate 7
+
+plate.7.transcript.counts <-
+  as.data.frame(
+    read.delim(
+      "data/transcript_counts/PN7_TranscriptCounts.tsv",
+      sep = "\t",
+      stringsAsFactors = F
+    )
+  )
+
+colnames(plate.7.transcript.counts)[-1] <-
+  paste("Pn7_", plate.wells.384, sep = "")
+rownames(plate.7.transcript.counts) <-
+  plate.7.transcript.counts$GENEID
+
+# Plate 8
+plate.8.transcript.counts <-
+  as.data.frame(
+    read.delim(
+      "data/transcript_counts/PN8_TranscriptCounts.tsv",
+      sep = "\t",
+      stringsAsFactors = F
+    )
+  )
+
+colnames(plate.8.transcript.counts)[-1] <-
+  paste("Pn8_", plate.wells.384, sep = "")
+rownames(plate.8.transcript.counts) <-
+  plate.8.transcript.counts$GENEID
+
+```
+
+## Combine plates into one count matrix.
+
+```{r combine plates, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+
+all.plates.transcript.counts <- dplyr::full_join(plate.2.transcript.counts, plate.3.transcript.counts, by = "GENEID") %>% 
+  full_join(., plate.4.transcript.counts, by = "GENEID") %>%
+  full_join(., plate.5.transcript.counts, by = "GENEID") %>% 
+  full_join(., plate.7.transcript.counts, by = "GENEID") %>% 
+  full_join(., plate.8.transcript.counts, by = "GENEID")
+
+# Substitute transcript counts NAs for 0s.
+
+all.plates.transcript.counts[is.na(all.plates.transcript.counts)] <- 0
+
+rownames(all.plates.transcript.counts) <- all.plates.transcript.counts$GENEID
+
+## Discard spike-in ERCC controls (not used for downstream analysis).
+
+all.plates.transcript.counts.no.ERCCs <- all.plates.transcript.counts[-grep("^ERCC", rownames(all.plates.transcript.counts)), ]
+
+## Create counts matrix.
+
+all.plates.transcript.counts.no.ERCCs.mx <- as.matrix(all.plates.transcript.counts.no.ERCCs[, -1])
+
+
+```
+
+## Transcripts/genes information.
+
+Please install package `Danio.rerio.Zv9.77.gtf` located in the  project's `annotation` folder. Code used to create this package described in `annotation/TxDb.Drerio.Ensembl.gtf.git.Zv9.R`.
+
+```{r gene_info, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+gene.symbols <-
+  mapIds(
+    org.Dr.eg.db,
+    keys = all.plates.transcript.counts.no.ERCCs$GENEID,
+    keytype = "ENSEMBL",
+    column = "SYMBOL"
+  ) %>% as.data.frame() %>% rownames_to_column(var = 'gene')
+
+colnames(gene.symbols)[2] <- "symbol"
+
+gene.locations <-
+  mapIds(
+    Danio.rerio.Zv9.77.gtf,
+    keys = all.plates.transcript.counts.no.ERCCs$GENEID,
+    column = "CDSCHROM",
+    keytype = "GENEID"
+  )
+
+mito.genes <- gene.locations == "MT" & !is.na(gene.locations)
+mito.genes <- mito.genes[which(mito.genes)] %>% names()
+
+```
+
+## Create a Seurat object, pre-process and QC.
+
+```{r seurat_object_QC, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12}
+
+scs <-
+  CreateSeuratObject(
+    counts = all.plates.transcript.counts.no.ERCCs.mx,
+    min.cells = 25,
+    min.features = 250,
+    project = "Macrophages_scRNA-seq_Zebrafish"
+  )
+
+metadata.df <- scs@meta.data
+
+metadata.df <-
+  metadata.df %>% rownames_to_column(var = "well_id") %>%
+  dplyr::mutate(Injury = ifelse(
+    orig.ident == "Pn8",
+    "Uninjured",
+    ifelse(
+      orig.ident == "Pn2" | orig.ident == "Pn5",
+      "1 DPI",
+      ifelse(orig.ident == "Pn3", "2 DPI", "3 DPI")
+    )
+  ))
+
+injury.type <- metadata.df$Injury
+names(injury.type) <- metadata.df$well_id
+
+
+scs <-
+  AddMetaData(object = scs,
+              metadata = injury.type,
+              col.name = "injury")
+
+scs@meta.data$injury <-
+  factor(scs@meta.data$injury,
+         levels = c("Uninjured", "1 DPI", "2 DPI", "3 DPI"))
+
+## Add percentage of mitochondrial genes reads to metadata.
+
+scs[["percent.mt"]] <-
+  PercentageFeatureSet(scs, features = mito.genes)
+
+# Assess UMIs, features and percentage of mitochondrial reads distribution.
+
+VlnPlot(
+  object = scs,
+  features = c("nCount_RNA", "nFeature_RNA", "percent.mt"),
+  group.by = "orig.ident"
+)
+
+# Plot Pn8 separately (Pn8 outliers compress y-axis scale which makes it difficult to make a clear assessment)for better visualization
+
+VlnPlot(
+  object = subset(scs, subset = orig.ident != "Pn8"),
+  features = c("nCount_RNA", "nFeature_RNA", "percent.mt"),
+  group.by = "orig.ident"
+)
+
+VlnPlot(
+  object = subset(scs, subset = orig.ident == "Pn8"),
+  features = c("nCount_RNA", "nFeature_RNA", "percent.mt"),
+  group.by = "orig.ident"
+)
+
+
+# Assess UMIs to features relationship. 
+
+FeatureScatter( object = subset(scs, subset = orig.ident != "Pn8"),
+               feature1 = "nCount_RNA",
+               feature2 = "nFeature_RNA")
+
+FeatureScatter( object = subset(scs, subset = orig.ident == "Pn8"),
+               feature1 = "nCount_RNA",
+               feature2 = "nFeature_RNA")
+
+```
+
+## Filter cells.
+
+Based on the quality assessment from above, we filtered cells using the parameters below (global thresholds, _i.e_, non plate-specific, applied due to quality heterogenity of plates). 
+
+```{r filter_cells, fig.align="center", fig.height=5, fig.width=12, echo=TRUE, message=FALSE, warning=FALSE}
+
+scs.filter <-
+  subset(
+    scs,
+    subset = percent.mt < 10 &
+      nFeature_RNA > 500 &
+      nFeature_RNA < 3500 & nCount_RNA > 1000 & nCount_RNA < 15000
+  )
+
+# UMIs to features relationship post filtering.
+
+
+VlnPlot(
+  object = scs.filter,
+  features = c("nCount_RNA", "nFeature_RNA", "percent.mt"),
+  group.by = "orig.ident"
+)
+
+FeatureScatter(object = scs.filter,
+               feature1 = "nCount_RNA",
+               feature2 = "nFeature_RNA")
+```
+
+## Top 500 most expressed genes.
+```{r top_500_most_expressed, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12}
+
+scs.sce <- as.SingleCellExperiment(scs.filter, assay = "RNA")
+
+features.QC <- perFeatureQCMetrics(scs.sce)
+
+rownames(features.QC) <- rownames(scs.sce)
+features.QC$gene_id <- rownames(features.QC)
+
+top.500.most.expressed <- dplyr::arrange(features.QC %>% as.data.frame(), desc(mean)) %>% head(n = 500)
+
+colnames(top.500.most.expressed)[3] <- "gene"
+
+top.500.most.expressed.annotated <- left_join(top.500.most.expressed, gene.symbols, by = "gene")
+
+```
+
+## SCT assay.
+
+### SCTransform.
+
+```{r sctransform, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12, results='hide'}
+
+scs.filter <-
+  SCTransform(scs.filter,
+              vars.to.regress = "percent.mt",
+              verbose = TRUE)
+
+```
+
+
+### Dimensional Reduction
+
+#### PCA
+
+```{r pca, echo=TRUE, message=FALSE, warning=FALSE, fig.width=10, fig.height=8}
+
+scs.filter <- RunPCA(scs.filter, verbose = FALSE, assay = 'SCT')
+
+DimPlot(scs.filter, label = FALSE, group.by = 'injury')
+
+ElbowPlot(scs.filter, ndims = 50)
+
+```
+
+#### UMAP
+
+```{r umap, echo=TRUE, message=FALSE, warning=FALSE, fig.width=10, fig.height=8}
+
+scs.filter <-
+  RunUMAP(scs.filter,
+          dims = 1:50,
+          verbose = TRUE,
+          assay = 'SCT')
+          
+
+DimPlot(scs.filter, group.by = "injury")
+
+```
+
+### Clustering
+
+```{r clustering, echo=TRUE, message=FALSE, warning=FALSE, fig.width=10, fig.height=8}
+
+scs.filter <-
+  FindNeighbors(scs.filter,
+                dims = 1:50,
+                verbose = TRUE,
+                assay = 'SCT')
+
+scs.filter <-
+  FindClusters(
+    scs.filter,
+    verbose = TRUE,
+    resolution = 0.5,
+    assay = 'SCT'
+  )
+
+
+DimPlot(scs.filter, label = FALSE, group.by = "ident") #+ NoLegend()
+
+# Cluster by injury table
+
+cluster.frequency.table <-
+  scs.filter@meta.data %>%
+  dplyr::count(seurat_clusters, injury) %>%
+  dplyr::group_by(seurat_clusters) %>%
+  dplyr::mutate(freq = n / sum(n)) %>%
+  ungroup()
+
+knitr::kable(caption = "Table of cluster by injury counts and frequencies",
+             col.names = c("Cluster", "Injury", "n", "Freq."),
+  cluster.frequency.table %>% arrange(seurat_clusters)
+  )
+  
+
+```
+
+## RNA assay
+Use for cluster marker detection, feature plots and trajectory analysis.
+
+### LogNorm and Scale.
+
+```{r log_normalise_RNA_Assay, echo=FALSE}
+
+scs.filter <-
+  NormalizeData(
+    object = scs.filter,
+    normalization.method = "LogNormalize",
+    scale.factor = 10000,
+    assay = 'RNA'
+  )
+
+DefaultAssay(scs.filter) <- "RNA"
+
+```
+
+### mmp9 and nampta expression levels.
+
+```{r mmp9_nampta_vlnplots, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12, fig.height=4}
+
+mmp9.vlnplot.1 <-
+  VlnPlot(scs.filter, features = "ENSDARG00000042816") + NoLegend() + xlab("Cluster") + ggtitle(NULL)
+mmp9.vlnplot.2 <-
+  VlnPlot(scs.filter, features = "ENSDARG00000042816", group.by = 'injury') + NoLegend() + xlab("Time point post injury") + ggtitle(NULL)
+
+mmp9.patchwork <- mmp9.vlnplot.1 + mmp9.vlnplot.2
+
+mmp9.patchwork + plot_annotation(title = "mmp9 expression levels (logn counts)",
+                                 theme = theme(plot.title = element_text(face = "bold", size = 16)))
+
+nampta.vlnplot.1 <-
+  VlnPlot(scs.filter, features = "ENSDARG00000030598") + NoLegend() +  xlab("Cluster") + ggtitle(NULL)
+nampta.vlnplot.2 <-
+  VlnPlot(scs.filter, features = "ENSDARG00000030598", group.by = 'injury') + NoLegend() + xlab("Time point post injury") + ggtitle(NULL)
+
+nampta.patchwork <- nampta.vlnplot.1 + nampta.vlnplot.2
+
+nampta.patchwork + plot_annotation(title = "nampta expression levels (logn counts)",
+                                 theme = theme(plot.title = element_text(face = "bold", size = 16)))
+```
+
+# Clusters markers
+
+```{r find_all_markers, echo=TRUE, message=FALSE, warning=FALSE}
+
+clusters.markers <- FindAllMarkers(scs.filter, min.pct = 0.2, assay = 'RNA', test.use = "wilcox")
+
+de.clusters.markers <- clusters.markers %>% dplyr::filter(p_val_adj < 0.05)
+
+
+```
+
+# Selected genes feature plots.
+
+Please note that the percentage values described in Figure 3.e plots were obtained from the `cluster.markers` dataframe, for cluster specific gene expression, or `top.500.most.expressed` dataframe, when global gene expression was described.
+
+```{r feature_plots_markers, echo=TRUE, message=FALSE, warning=FALSE, fig.width=14, fig.height=8}
+
+selected.genes <- c("lcp1", "cd63", "arg2", "mmp13a", "mmp9", "nampta")
+
+# Examples of how to obtain percentage of cells expressing cells selected markers.
+
+# dplyr::filter(top.500.most.expressed, gene %in% dplyr::filter(gene.symbols, symbol %in% selected.genes)$gene)
+# dplyr::filter(clusters.markers, gene %in% dplyr::filter(gene.symbols, symbol %in% selected.genes)$gene, cluster == "2")
+
+selected.genes.annotated <- dplyr::filter(gene.symbols, symbol %in% selected.genes)
+
+selected.genes.annotated <-
+  selected.genes.annotated %>% arrange(factor(symbol,
+                                              levels = selected.genes))
+
+
+markers.set.plot <-
+  FeaturePlot(
+    object = scs.filter,
+    features = selected.genes.annotated$gene,
+    cols = c("lightblue", "darkred"),
+    pt.size = 2,
+    combine = FALSE
+  )
+
+names(markers.set.plot) <- selected.genes.annotated$symbol
+
+markers.set.plot.l <- lapply(names(markers.set.plot), function(x) markers.set.plot[[x]] + labs(title = x))
+
+cowplot::plot_grid(plotlist = markers.set.plot.l)
+
+```
+
+# Antigen processing and presentation genes.
+
+```{r antigen_processing_presentation_genes, echo=TRUE, message=FALSE, warning=FALSE, fig.width=18, fig.height=12}
+
+antigen.processing.presenting.genes <- c("cd83", "cd81a", "cd40","cd74b", "cd9b", "cd164", "cd276", "cd99", "cd82b", "cd82a", "cd99l2", "cd74a")
+
+# Examples of how to obtain percentage of cells expressing antigen processing and presentation genes.
+
+# dplyr::filter(top.500.most.expressed, gene %in% dplyr::filter(gene.symbols, symbol %in% antigen.processing.presenting.genes)$gene)
+# dplyr::filter(clusters.markers, gene %in% dplyr::filter(gene.symbols, symbol %in% antigen.processing.presenting.genes)$gene, cluster == "1")
+
+
+antigen.processing.presenting.genes.annotated <-
+  dplyr::filter(gene.symbols, symbol %in% antigen.processing.presenting.genes)
+
+antigen.processing.presenting.genes.annotated <-
+  antigen.processing.presenting.genes.annotated %>% arrange(factor(
+    symbol,
+    levels = antigen.processing.presenting.genes)
+    )
+
+
+antigen.processing.presenting.genes.plot <-
+  FeaturePlot(
+    object = scs.filter,
+    features = antigen.processing.presenting.genes.annotated$gene,
+    cols = c("lightblue", "darkred"),
+    pt.size = 2,
+    combine = FALSE
+  )
+
+names(antigen.processing.presenting.genes.plot) <- antigen.processing.presenting.genes.annotated$symbol
+
+antigen.processing.presenting.genes.plot.l <- lapply(names(antigen.processing.presenting.genes.plot), function(x) antigen.processing.presenting.genes.plot[[x]] + labs(title = x))
+
+cowplot::plot_grid(plotlist = antigen.processing.presenting.genes.plot.l)
+```
+
+# Extended Figure 5.b and 5.e violin plots.
+
+```{r extended_figure_5_b_e_vlnplots, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12, fig.height=4}
+# pou2f3 == ENSDARG00000052387
+
+VlnPlot(scs.filter, features = "ENSDARG00000052387") + NoLegend() + xlab("Cluster") + ggtitle("pou2f3")
+
+VlnPlot(scs.filter, features = "ENSDARG00000055158") + NoLegend() + xlab("Cluster") + ggtitle("prox1a")
+
+```
+
+# Save Seurat object for trajectory analysis.
+See `Trajectory_Analysis.ipynb`
+
+```{r save_seurat_object, eval = FALSE, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+
+save(scs.filter, file = "data/objects/scs_filter.Rdata")
+
+```
+
+# Session information
+ 
+```{r session_info}
+sessionInfo()
+```
+
