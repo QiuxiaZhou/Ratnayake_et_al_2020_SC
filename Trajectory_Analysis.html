@@ -13077,7 +13077,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="SC-trajectory-analysis-included-in-Ratnayake-et-al,-2020">SC trajectory analysis included in <a href="https://www.biorxiv.org/content/10.1101/2020.08.24.262428v1.abstract">Ratnayake et al, 2020</a><a class="anchor-link" href="#SC-trajectory-analysis-included-in-Ratnayake-et-al,-2020">&#182;</a></h1>
+<h1 id="SC-trajectory-analysis-included-in-Ratnayake-et-al,-2020.">SC trajectory analysis included in <a href="https://www.biorxiv.org/content/10.1101/2020.08.24.262428v1.abstract">Ratnayake et al, 2020</a>.<a class="anchor-link" href="#SC-trajectory-analysis-included-in-Ratnayake-et-al,-2020.">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -13387,7 +13387,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">normalize_total</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">target_sum</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
@@ -13419,7 +13419,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">sce</span><span class="p">)</span>
@@ -13432,7 +13432,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span>
@@ -13448,16 +13448,16 @@ altExpNames(0):
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[55]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
 <pre>AnnData object with n_obs × n_vars = 1309 × 14222 
-    obs: &#39;orig.ident&#39;, &#39;nCount_RNA&#39;, &#39;nFeature_RNA&#39;, &#39;injury&#39;, &#39;percent.mt&#39;, &#39;nCount_SCT&#39;, &#39;nFeature_SCT&#39;, &#39;SCT_snn_res.0.5&#39;, &#39;seurat_clusters&#39;, &#39;ident&#39;, &#39;dpt_pseudotime&#39;, &#39;distance&#39;, &#39;clusters&#39;
-    uns: &#39;seurat_clusters_colors&#39;, &#39;injury_colors&#39;, &#39;neighbors&#39;, &#39;paga&#39;, &#39;seurat_clusters_sizes&#39;, &#39;draw_graph&#39;, &#39;iroot&#39;, &#39;diffmap_evals&#39;, &#39;clusters_colors&#39;, &#39;log1p&#39;
-    obsm: &#39;X_pca&#39;, &#39;X_umap&#39;, &#39;X_draw_graph_fa&#39;, &#39;X_diffmap&#39;
+    obs: &#39;orig.ident&#39;, &#39;nCount_RNA&#39;, &#39;nFeature_RNA&#39;, &#39;injury&#39;, &#39;percent.mt&#39;, &#39;nCount_SCT&#39;, &#39;nFeature_SCT&#39;, &#39;SCT_snn_res.0.5&#39;, &#39;seurat_clusters&#39;, &#39;ident&#39;
+    uns: &#39;seurat_clusters_colors&#39;, &#39;injury_colors&#39;, &#39;log1p&#39;
+    obsm: &#39;X_pca&#39;, &#39;X_umap&#39;
     layers: &#39;logcounts&#39;</pre>
 </div>
 
@@ -13469,7 +13469,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">sce</span>
@@ -13490,7 +13490,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">umap</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ENSDARG00000023188&#39;</span><span class="p">])</span>
@@ -13525,7 +13525,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">umap</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ENSDARG00000023188&#39;</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;logcounts&#39;</span><span class="p">)</span>
@@ -13567,7 +13567,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">n_pcs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">use_rep</span><span class="o">=</span><span class="s1">&#39;X_pca&#39;</span><span class="p">)</span>
@@ -13608,7 +13608,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">paga</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="s1">&#39;seurat_clusters&#39;</span><span class="p">)</span>
@@ -13642,7 +13642,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">paga</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;seurat_clusters&#39;</span><span class="p">],</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
@@ -13695,7 +13695,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">draw_graph</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">init_pos</span><span class="o">=</span><span class="s1">&#39;paga&#39;</span><span class="p">)</span>
@@ -13728,7 +13728,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">paga_compare</span><span class="p">(</span>
@@ -13776,7 +13776,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">paga_compare</span><span class="p">(</span>
@@ -13824,7 +13824,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">draw_graph</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;seurat_clusters&#39;</span><span class="p">,</span><span class="s1">&#39;injury&#39;</span><span class="p">])</span>
@@ -13866,7 +13866,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;iroot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">sce</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;seurat_clusters&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;3&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -13879,7 +13879,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;seurat_clusters&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span>
@@ -13895,7 +13895,7 @@ altExpNames(0):
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[22]:</div>
+    <div class="prompt output_prompt">Out[24]:</div>
 
 
 
@@ -13912,7 +13912,7 @@ altExpNames(0):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">dpt</span><span class="p">(</span><span class="n">sce</span><span class="p">)</span>
@@ -14026,7 +14026,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ENSDARG00000025147&#39;</span><span class="p">,</span> <span class="s1">&#39;ENSDARG00000023188&#39;</span><span class="p">,</span>
@@ -14043,7 +14043,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">draw_graph</span><span class="p">(</span><span class="n">sce</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">markers</span><span class="p">,</span> <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;on data&#39;</span><span class="p">,</span> <span class="n">use_raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -14085,7 +14085,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;dwell_1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
@@ -14099,7 +14099,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sce</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;dpt_pseudotime&#39;</span><span class="p">]</span>
@@ -14112,7 +14112,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sce</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;seurat_clusters&#39;</span><span class="p">]</span> 
@@ -14125,7 +14125,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;clusters_colors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sce</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;seurat_clusters_colors&#39;</span><span class="p">]</span>
@@ -14138,7 +14138,7 @@ computing Diffusion Pseudotime using n_dcs=10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">})</span>

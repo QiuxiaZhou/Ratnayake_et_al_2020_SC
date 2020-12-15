@@ -19,7 +19,7 @@ editor_options:
 # Repository details.
 
 - Required transcript counts matrices files and objects are included in `data/transcript_counts` and `data/objects` folders respectively.
-- An annotation package for Dan Rer 10 Ensembl GTF version 91 can be found in `annotation` folder.
+- An annotation package for Zv9 Ensembl GTF version 77 can be found in `annotation` folder.
 
 # Load required libraries.
 
