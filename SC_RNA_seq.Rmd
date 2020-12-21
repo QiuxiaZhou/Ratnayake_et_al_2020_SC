@@ -37,7 +37,7 @@ library(patchwork)
 
 ```{r set_working_dir, include = FALSE, results='hide', message=FALSE, warning=FALSE}
 
-setwd("~/projects/Danni_Ratnayake/Danni_Ratnayake_scRNA-seq_Machrophage_Zebrafish_Samples_Currie_Group/analysis/R/Github_repo/Ratnayake_et_al_2020_SC")
+setwd("Ratnayake_et_al_2020_SC")
 
 ```
 
