@@ -36,7 +36,7 @@ library(patchwork)
 ```
 
 ```{r set_working_dir, include = FALSE, results='hide', message=FALSE, warning=FALSE}
-
+# Please adjust to the desired repository location.
 setwd("Ratnayake_et_al_2020_SC")
 
 ```
